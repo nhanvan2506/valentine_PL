@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PlanYour.Date - Will you be my valentine?</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9aa2, #ffd4e0, #fff5f7);
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #333;
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #ff6b81;
+    }
+
+    .btn-small {
+      padding: 8px 20px;
+      border-radius: 30px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .faq    { background: white; color: #ff6b81; }
+    .getstarted { background: #ff6b81; color: white; }
+
+    .card {
+      background: white;
+      border-radius: 24px;
+      padding: 40px 50px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+      text-align: center;
+      max-width: 420px;
+      position: relative;
+      margin: 20px;
+    }
+
+    .cat {
+      width: 180px;
+      height: auto;
+      margin: 10px auto 25px;
+      image-rendering: crisp-edges;
+    }
+
+    h1 {
+      font-size: 2.1rem;
+      color: #ff6b81;
+      margin: 0 0 30px 0;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      margin-top: 35px;
+      position: relative;
+    }
+
+    .btn {
+      font-size: 1.25rem;
+      padding: 16px 60px;
+      border-radius: 50px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .yes {
+      background: #ff6b81;
+      color: white;
+      box-shadow: 0 8px 20px rgba(255,107,129,0.4);
+    }
+
+    .yes:hover {
+      transform: scale(1.12);
+      box-shadow: 0 12px 30px rgba(255,107,129,0.55);
+    }
+
+    .no {
+      background: #e0e0e0;
+      color: #555;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+      position: relative;
+      transition: transform 0.18s ease;
+    }
+
+    /* Make it harder to click by moving on approach */
+    .no-area {
+      position: absolute;
+      width: 180px;
+      height: 70px;
+      pointer-events: none;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="title">HELLO PHUONG LINH</div>
+  <!-- <div>
+    <button class="btn-small faq">FAQ</button>
+    <button class="btn-small getstarted">GET STARTED</button>
+  </div> -->
+</div>
+
+<div class="card">
+  <img 
+    class="cat" 
+    src="D:\HK252\for_fun\images\f68ba471-32b6-48aa-8978-cf3c3bdc8acd_20260208_192847_220_3600.jpg" 
+    alt="cute shy cat asking to be valentine"
+  />
+  
+  <h1>Will you be my valentine?</h1>
+
+  <div class="buttons">
+    <button class="btn yes" onclick="alert('Yayyyy! 💖✨\nI knew you would say yes hehe~')">
+      YES
+    </button>
+
+    <div style="position: relative;">
+      <button class="btn no" id="noBtn">
+        NO
+      </button>
+      <div class="no-area" id="noArea"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const noBtn = document.getElementById('noBtn');
+  const noArea = document.getElementById('noArea');
+
+  function moveNoButton(e) {
+    const rect = noBtn.getBoundingClientRect();
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+
+    // Distance from mouse to button center
+    const btnCenterX = rect.left + rect.width / 2;
+    const btnCenterY = rect.top + rect.height / 2;
+
+    const dx = mouseX - btnCenterX;
+    const dy = mouseY - btnCenterY;
+    const distance = Math.sqrt(dx*dx + dy*dy);
+
+    if (distance < 120) {
+      // Run away direction = opposite to mouse
+      let moveX = -dx * 1.8;
+      let moveY = -dy * 1.8;
+
+      // Limit movement so it doesn't fly too far
+      moveX = Math.max(-180, Math.min(180, moveX));
+      moveY = Math.max(-140, Math.min(140, moveY));
+
+      noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    }
+  }
+
+  // Move when mouse is near
+  document.addEventListener('mousemove', moveNoButton);
+
+  // Also trigger when trying to approach from touch devices (optional)
+  document.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      moveNoButton(e.touches[0]);
+    }
+  }, { passive: true });
+
+  // Bonus: if someone magically clicks it very fast
+  noBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    noBtn.style.transform = 'translate(0,0)';
+    alert("hehe... nice try but nooo ฅ(>ω<ฅ)");
+  });
+</script>
+
+</body>
+</html>
